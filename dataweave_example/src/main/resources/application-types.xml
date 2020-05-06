@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="jsonex" format="json">
+      <types:shape format="weave" example="examples/Address_Json.json"><![CDATA[%dw 2.0
+
+type jsonex = {|
+  id: String, 
+  isActive: Boolean, 
+  age: Number {"typeId": "int"}, 
+  name: String, 
+  gender: String, 
+  company: String, 
+  email: String, 
+  phone: String, 
+  address: String
+|} {"example": "{\\\"id\\\":\\\"59761c233d8d0f92a6b0570d\\\",\\\"isActive\\\":true,\\\"age\\\":24,\\\"name\\\":\\\"Kirsten Sellers\\\",\\\"gender\\\":\\\"female\\\",\\\"company\\\":\\\"EMERGENT\\\",\\\"email\\\":\\\"kirstensellers@emergent.com\\\",\\\"phone\\\":\\\"+1 (831) 564-2190\\\",\\\"address\\\":\\\"886 Gallatin Place, Fannett, Arkansas, 4656\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="xmlex" format="xml">
+      <types:example format="xml" element="user" location="examples/user_infoXml.xml"/>
+    </types:type>
+    <types:type name="XmlListEx" format="xml">
+      <types:example format="xml" element="CATALOG" location="examples/Catalog_ListXml-1.xml"/>
+    </types:type>
+    <types:type name="JsonListEx" format="json">
+      <types:shape format="weave" example="examples/JsonListRespCD-1.json"><![CDATA[%dw 2.0
+
+type JsonListEx = {|
+  CD: Array<{|    cd: String,     COMPANY: String,     PRICE: Number {"typeId": "double"},     departDate: String  |}>
+|} {"example": "{\\\"CD\\\":[{\\\"cd\\\":\\\"AMS\\\",\\\"COMPANY\\\":\\\"MSS\\\",\\\"PRICE\\\":10.05,\\\"departDate\\\":\\\"19\\/04\\/2020\\\"},{\\\"cd\\\":\\\"BMS\\\",\\\"COMPANY\\\":\\\"MSS\\\",\\\"PRICE\\\":10.05,\\\"departDate\\\":\\\"19\\/04\\/2020\\\"},{\\\"cd\\\":\\\"CMS\\\",\\\"COMPANY\\\":\\\"MSS\\\",\\\"PRICE\\\":10.05,\\\"departDate\\\":\\\"19\\/04\\/2020\\\"}]}"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#fb2925a5-1bf5-442c-b303-2015e110bae3">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="xmlex"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="jsonex"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#88136233-5e14-4b1f-9a3d-c3b88ea90c02">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="XmlListEx"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="JsonListEx"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

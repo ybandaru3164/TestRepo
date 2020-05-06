@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="eba19b85-87da-49fb-84a4-7473a83a88e0" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="dataweave_exampleFlow" doc:id="97cb8725-eb01-4b56-901e-8870573b6c05" >
+		<http:listener doc:name="Listener" doc:id="da78bedb-0a1f-4991-8b8c-9a05a0140803" config-ref="HTTP_Listener_config" path="/dataweavejson"/>
+		<logger level="INFO" doc:name="Logger" doc:id="65c971df-031f-4a3e-9c6d-a4fd7986f99d" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="fb2925a5-1bf5-442c-b303-2015e110bae3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	id: payload.user.id,
+	isActive: 'true',
+	age : payload.user.id,
+	name: payload.user.name,
+	gender: 'M',
+	phone: payload.user.ph,
+	address: payload.user.address,
+	company: payload.@user.firstname
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="19f44340-7b6f-4845-ac64-f323f8b88e6c" message="#[payload]"/>
+	</flow>
+	<flow name="dataweave_exampleFlow1" doc:id="26d1e855-543f-4adb-b59a-5c347eed3886" >
+		<http:listener doc:name="Listener" doc:id="04f3dfd2-ddec-42a9-8ace-bdc487425be4" config-ref="HTTP_Listener_config" path="/ListXml"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f0bdd12c-93e6-4e2d-bd0c-3768783e3333" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="88136233-5e14-4b1f-9a3d-c3b88ea90c02" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+CD:
+payload.CATALOG.*CD map{
+		cd: $.@cdname,
+		COMPANY: $.COMPANY,
+		PRICE: $.PRICE,
+		departDate: $.DepartureDate as Date{format: "yyyy-MM-dd"} as String {format: "dd/MM/yyyy"}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="payload" doc:id="9a1c26b5-4ac2-4fae-bd7b-12f39d140723" message="#[payload]"/>
+	</flow>
+</mule>

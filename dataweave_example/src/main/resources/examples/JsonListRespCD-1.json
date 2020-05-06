@@ -1,0 +1,22 @@
+{
+	"CD":[
+		{
+			"cd":"AMS",
+			"COMPANY":"MSS",
+			"PRICE":10.05,
+			"departDate":"19/04/2020"
+		},
+		{
+			"cd":"BMS",
+			"COMPANY":"MSS",
+			"PRICE":10.05,
+			"departDate":"19/04/2020"
+		},
+		{
+			"cd":"CMS",
+			"COMPANY":"MSS",
+			"PRICE":10.05,
+			"departDate":"19/04/2020"
+		}
+	]
+}

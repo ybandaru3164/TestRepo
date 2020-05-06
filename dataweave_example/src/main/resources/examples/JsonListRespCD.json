@@ -1,0 +1,19 @@
+{
+	"CD":[
+		{
+			"cd":"AMS",
+			"COMPANY":"MSS",
+			"PRICE":10.05
+		},
+		{
+			"cd":"BMS",
+			"COMPANY":"MSS",
+			"PRICE":10.05
+		},
+		{
+			"cd":"CMS",
+			"COMPANY":"MSS",
+			"PRICE":10.05
+		}
+	]
+}
